@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <style>
+    body {
+       font-family: Arial, sans-serif; 
+       margin: 20px;
+     }
+    form {
+       border: 1px solid #ccc;
+        padding: 20px;
+         border-radius: 10px;
+         }
+    label { 
+      display: block;
+       margin-top: 10px;
+        font-weight: bold;
+         font-size: 14px;
+         }
+    input, textarea, select {
+       width: 100%;
+        padding: 8px;
+         margin-top: 5px; 
+        }
+    button { 
+      margin-top: 15px;
+       padding: 10px 15px;
+        cursor: pointer;
+       }
+    .resume { 
+      margin-top: 30px; padding: 20px; 
+      border: 4px double #000;
+      border-radius: 10px; 
+      display: none; max-width: 1000px;
+      background: #fff;
+    }
+    .resume-header {
+       display: flex;
+        align-items: center;
+         gap: 15px;
+         }
+    .resume-header img { 
+      width: 100px;
+       height: 100px;
+        object-fit: cover;
+         border-radius: 50%; 
+         border: 2px solid #333; 
+        }
+    h2 { 
+      margin-bottom: 5px;
+     }
+    #downloadBtn {
+       display: none; 
+       background: #007bff; 
+       color: #fff; 
+       border: none; 
+      }
+    .timeline p {
+       margin: 5px 0; 
+       line-height: 1.4; 
+      }
+    .timeline b {
+       font-weight: 600; 
+       font-size: 15px; 
+      }
+    .contact {
+       display: flex; 
+       justify-content: space-between; 
+       flex-wrap: wrap; 
+       gap: 20px; 
+      }
+    .contact p {
+       margin: 5px 0; 
+       flex: 1;
+       }
+#outDescription {
+  font-style: italic;
+  color: #555;
+  margin: 10px 0 20px 0;
+  white-space: pre-wrap;   /*  preserves line breaks + auto-wrap */
+  word-wrap: break-word;   /*  forces long words/URLs to wrap */
+}
+
+    .education {
+       display: flex; 
+       justify-content: space-between;
+        gap: 20px;
+       }
+    .education div { 
+      flex: 1;
+       border: 1px solid #ccc; 
+       padding: 10px; 
+       border-radius: 8px; 
+       background: #f9f9f9;
+       }
+    @media print {
+      form, #downloadBtn { 
+        display: none;
+       }
+      .resume {
+         border: 4px double #000;
+         }
+    }
+  </style>
+</head>
+<body>
+
+  <form id="resumeForm">
+    <label>Full Name:</label>
+    <input type="text" id="name" oninput="updateResume()" required>
+
+    <label>Email:</label>
+    <input type="email" id="email" oninput="updateResume()" required>
+
+    <label>Phone:</label>
+    <input type="text" id="phone" oninput="updateResume()" required>
+
+    <label>Website URL:</label>
+    <input type="url" id="website" oninput="updateResume()">
+
+    <label>Gender:</label>
+    <select id="gender" onchange="updateResume()">
+      <option value="">Select</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+
+    <label>Marital Status:</label>
+    <select id="marital" onchange="updateResume()">
+      <option value="">Select</option>
+      <option>Married</option>
+      <option>Unmarried</option>
+    </select>
+
+    <label>Upload Photo:</label>
+    <input type="file" id="photo" accept="image/*" onchange="previewPhoto()">
+
+    <label>Choose Background Color:</label>
+    <select id="bgColor" onchange="changeBackground()">
+      <option value="#ffffff">White</option>
+      <option value="#f8f9fa">Light Gray</option>
+      <option value="#e3f2fd">Light Blue</option>
+      <option value="#e8f5e9">Light Green</option>
+      <option value="#fff3e0">Light Orange</option>
+      <option value="#fce4ec">Light Pink</option>
+    </select>
+
+    <h3>Description / About Me</h3>
+    <textarea id="description" oninput="updateResume()" placeholder="Write about yourself line by line..."></textarea>
+
+    <h3>Education Background</h3>
+    <label>10th School Name:</label>
+    <input type="text" id="school10" oninput="updateResume()">
+    <label>Group / Course:</label>
+    <input type="text" id="group10" oninput="updateResume()">
+    <label>Percentage:</label>
+    <input type="text" id="percent10" oninput="updateResume()">
+    <label>Start Year:</label>
+    <input type="text" id="start10" oninput="updateResume()">
+    <label>Passing Year:</label>
+    <input type="text" id="pass10" oninput="updateResume()">
+
+    <label>Intermediate College Name:</label>
+    <input type="text" id="schoolInter" oninput="updateResume()">
+    <label>Group:</label>
+    <input type="text" id="groupInter" oninput="updateResume()">
+    <label>Percentage:</label>
+    <input type="text" id="percentInter" oninput="updateResume()">
+    <label>Start Year:</label>
+    <input type="text" id="startInter" oninput="updateResume()">
+    <label>Passing Year:</label>
+    <input type="text" id="passInter" oninput="updateResume()">
+
+    <label>Graduation College Name:</label>
+    <input type="text" id="schoolGrad" oninput="updateResume()">
+    <label>Course:</label>
+    <input type="text" id="groupGrad" oninput="updateResume()">
+    <label>Percentage:</label>
+    <input type="text" id="percentGrad" oninput="updateResume()">
+    <label>Start Year:</label>
+    <input type="text" id="startGrad" oninput="updateResume()">
+    <label>Passing Year:</label>
+    <input type="text" id="passGrad" oninput="updateResume()">
+
+    <h3>Family Background</h3>
+    <label>Father's Name:</label>
+    <input type="text" id="fatherName" oninput="updateResume()">
+    <label>Father's Occupation:</label>
+    <input type="text" id="fatherJob" oninput="updateResume()">
+    <label>Mother's Name:</label>
+    <input type="text" id="motherName" oninput="updateResume()">
+    <label>Mother's Occupation:</label>
+    <input type="text" id="motherJob" oninput="updateResume()">
+
+    <h3>Technical Skills:</h3>
+    <textarea id="skills" oninput="updateResume()"></textarea>
+
+    <h3>Certifications:</h3>
+    <textarea id="certifications" oninput="updateResume()" placeholder="E.g. Certification Name - URL"></textarea>
+
+    <h3>Projects:</h3>
+    <textarea id="projects" oninput="updateResume()" placeholder="Project title with details and URL"></textarea>
+
+    <h3>Hobbies:</h3>
+    <textarea id="hobbies" oninput="updateResume()"></textarea>
+
+    <h3>Goals:</h3>
+    <textarea id="goals" oninput="updateResume()"></textarea>
+  </form>
+
+  <button id="downloadBtn" onclick="window.print()">Download PDF</button>
+
+  <div class="resume" id="resumeOutput">
+    <div class="resume-header">
+      <img id="outPhoto" src="" alt="Profile Photo" style="display:none;">
+      <h2 id="outName"></h2>
+    </div>
+
+    <h3>Contact Details</h3>
+    <div class="contact">
+      <p><b>Email:</b> <span id="outEmail"></span></p>
+      <p><b>Phone:</b> <span id="outPhone"></span></p>
+      <p><b>Website:</b> <span id="outWebsite"></span></p>
+      <p><b>Gender:</b> <span id="outGender"></span></p>
+      <p><b>Marital Status:</b> <span id="outMarital"></span></p>
+    </div>
+
+    <h3>Description</h3>
+    <p id="outDescription"></p>
+
+    <h3>Education Background</h3>
+    <div class="education">
+      <div id="out10"></div>
+      <div id="outInter"></div>
+      <div id="outGrad"></div>
+    </div>
+
+    <h3>Family Background</h3>
+    <p id="outFamily"></p>
+
+    <h3>Technical Skills</h3>
+    <p id="outSkills"></p>
+
+    <h3>Certifications</h3>
+    <p id="outCertifications"></p>
+
+    <h3>Projects</h3>
+    <p id="outProjects"></p>
+
+    <h3>Hobbies</h3>
+    <p id="outHobbies"></p>
+
+    <h3>Goals</h3>
+    <p id="outGoals"></p>
+  </div>
+
+  <script>
+    function updateResume() {
+      document.getElementById("outName").innerText = document.getElementById("name").value;
+      document.getElementById("outEmail").innerText = document.getElementById("email").value;
+      document.getElementById("outPhone").innerText = document.getElementById("phone").value;
+      document.getElementById("outWebsite").innerText = document.getElementById("website").value;
+      document.getElementById("outGender").innerText = document.getElementById("gender").value;
+      document.getElementById("outMarital").innerText = document.getElementById("marital").value;
+
+      document.getElementById("outDescription").innerText = document.getElementById("description").value;
+
+      document.getElementById("out10").innerHTML =
+        "<b>10th</b><br>" +
+        "School: " + document.getElementById("school10").value + "<br>" +
+        "Group: " + document.getElementById("group10").value + "<br>" +
+        "Percentage: " + document.getElementById("percent10").value + "%<br>" +
+        "Years: " + document.getElementById("start10").value + " - " + document.getElementById("pass10").value;
+
+      document.getElementById("outInter").innerHTML =
+        "<b>Intermediate</b><br>" +
+        "College: " + document.getElementById("schoolInter").value + "<br>" +
+        "Group: " + document.getElementById("groupInter").value + "<br>" +
+        "Percentage: " + document.getElementById("percentInter").value + "%<br>" +
+        "Years: " + document.getElementById("startInter").value + " - " + document.getElementById("passInter").value;
+
+      document.getElementById("outGrad").innerHTML =
+        "<b>Graduation</b><br>" +
+        "College: " + document.getElementById("schoolGrad").value + "<br>" +
+        "Course: " + document.getElementById("groupGrad").value + "<br>" +
+        "Percentage: " + document.getElementById("percentGrad").value + "%<br>" +
+        "Years: " + document.getElementById("startGrad").value + " - " + document.getElementById("passGrad").value;
+
+      // Family Background
+      document.getElementById("outFamily").innerHTML =
+        "Father: " + document.getElementById("fatherName").value + 
+        " (" + document.getElementById("fatherJob").value + ")<br>" +
+        "Mother: " + document.getElementById("motherName").value + 
+        " (" + document.getElementById("motherJob").value + ")";
+
+      // Technical Skills
+      document.getElementById("outSkills").innerText = document.getElementById("skills").value;
+
+      // Certifications
+      document.getElementById("outCertifications").innerText = document.getElementById("certifications").value;
+
+      // Projects
+      document.getElementById("outProjects").innerText = document.getElementById("projects").value;
+
+      // Hobbies
+      document.getElementById("outHobbies").innerText = document.getElementById("hobbies").value;
+
+      // Goals
+      document.getElementById("outGoals").innerText = document.getElementById("goals").value;
+
+      // Show resume
+      document.getElementById("resumeOutput").style.display = "block";
+      document.getElementById("downloadBtn").style.display = "inline-block";
+    }
+
+    function changeBackground() {
+      const color = document.getElementById("bgColor").value;
+      document.getElementById("resumeOutput").style.background = color;
+    }
+
+    function previewPhoto() {
+      const file = document.getElementById("photo").files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById("outPhoto");
+        img.src = e.target.result;
+        img.style.display = "block";
+      }
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html>
